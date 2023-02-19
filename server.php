@@ -1,5 +1,10 @@
 <?php
 
+ini_set('session.use_cookies', 0);
+
+session_id($_POST['sess'] ?? uniqid() . uniqid()); // Falling back to a random ID even though we'll not have context then
+session_start();
+
 $config = require 'config.php';
 
 $api_key = $config['apikey'];
@@ -23,12 +28,14 @@ if (empty($prompt)) {
     exit;
 }
 
-$history = array();
+if ( ! isset( $_SESSION['history'] ) ) {
+    $_SESSION['history'] = [];
+}
 
 
 
 $enriched_prompt = <<<PROMPT
-If the prompt is about code, please always enclose code samples in --CODESTART-- and --CODEEND--
+If the prompt is about code, always enclose code samples in "--CODESTART--" and "--CODEEND--"
 
 For example:
 --CODESTART--
@@ -37,7 +44,7 @@ echo "hello world";
 --CODEEND--
 PROMPT;
 
-foreach ( $history as $key => $pair ) {
+foreach ( $_SESSION['history'] as $key => $pair ) {
     $enriched_prompt .= 'Prompt:' . $key . ': ' . $pair['prompt'] . PHP_EOL;
     $enriched_prompt .= 'Response:' . $key . ': ' . $pair['response'] . PHP_EOL;
 }
@@ -48,12 +55,18 @@ $enriched_prompt .= PHP_EOL . 'New prompt: ' . $prompt . PHP_EOL;
 $enriched_prompt .= 'Response: ';
 
 
+// For English text, 1 token is approximately 4 characters or 0.75 words.
+// Make sure we don't go over 2048 tokens for the prompt - leave 25% margin. --> allow only 6144 chars in prompt
+$max_prompt_chars = 6144;
+if (strlen($enriched_prompt) > $max_prompt_chars) {
+    // take max_prompt_chars from the end of enriched_prompt
+     $enriched_prompt = substr($enriched_prompt, strlen($enriched_prompt) - $max_prompt_chars);
+}
 
 
 $data = array(
     'model' => 'text-davinci-003',
     'prompt' => $enriched_prompt,
-    //'max_tokens' => 7,
     'temperature' => 0.5,
     //'top_p' => 0.1,
     'stop' => [
@@ -98,6 +111,11 @@ curl_setopt($ch, CURLOPT_WRITEFUNCTION, function($ch, $data) use (&$this_respons
 
         $response = json_decode($line, true);
 
+        if (!isset($response['choices'][0]['text'])) {
+            echo "Could not generate response: ";
+            var_dump($line);
+        }
+
         $actual_data = $response['choices'][0]['text'];
 
         $this_response .= $actual_data;
@@ -118,10 +136,10 @@ if ($error) {
 } else {
 
     //$response = json_decode($result, true);
-    $history[] = array(
+    $_SESSION['history'][] = [
         'prompt' => $prompt,
         'response' => trim( $this_response ),
-    );
+    ];
 }
 
 

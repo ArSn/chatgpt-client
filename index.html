@@ -71,12 +71,31 @@
             background-color: #dddddd;
         }
 
+        #restart-container {
+            display: inline-block;
+            width: 150px;
+            padding: 10px;
+            padding-left: 0;
+        }
+
+        #restart-container button {
+            height: 40px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: #fff;
+            cursor: pointer;
+        }
+
     </style>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.7.0/build/styles/atom-one-dark.min.css">
     <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.7.0/build/highlight.min.js"></script>
 </head>
 <body>
+
     <div class="container">
+        <div id="restart-container"><button id="reset-btn">New conversation</button></div>
         <div class="content" id="message-container">
         </div>
         <div class="footer">
