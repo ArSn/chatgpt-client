@@ -27,7 +27,15 @@ $history = array();
 
 
 
-$enriched_prompt = '';
+$enriched_prompt = <<<PROMPT
+If the prompt is about code, please always enclose code samples in --CODESTART-- and --CODEEND--
+
+For example:
+--CODESTART--
+<?php
+echo "hello world";
+--CODEEND--
+PROMPT;
 
 foreach ( $history as $key => $pair ) {
     $enriched_prompt .= 'Prompt:' . $key . ': ' . $pair['prompt'] . PHP_EOL;

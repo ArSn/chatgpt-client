@@ -3,18 +3,75 @@
 <head>
     <title>Chat App</title>
     <style>
-        /* Add your CSS styles here */
-        #message-container {
-            height: 200px;
-            overflow-y: scroll;
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            font-family: sans-serif;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .content {
+            flex: 1;
+            background-color: #eee;
+            padding: 20px;
+        }
+
+        .footer {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            background-color: #ddd;
+        }
+
+        .input-wrapper {
+            display: flex;
+            width: 100%;
+            align-items: center;
+        }
+
+        .input-wrapper input {
+            flex: 1;
+            height: 40px;
+            width: 100%;
+            margin-right: 10px;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+        }
+
+        .input-wrapper button {
+            height: 40px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: #fff;
+            cursor: pointer;
         }
     </style>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.7.0/build/styles/atom-one-dark.min.css">
+    <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.7.0/build/highlight.min.js"></script>
 </head>
 <body>
-    <div id="message-container"></div>
-    <div>
-        <input type="text" id="message-input">
-        <button id="send-btn">Send</button>
+    <div class="container">
+        <div class="content" id="message-container">
+            <p>Enter a prompt to begin.</p>
+        </div>
+        <div class="footer">
+            <div class="input-wrapper">
+                <input type="text" id="message-input" placeholder="Enter a prompt to begin.">
+                <button id="send-btn">Send</button>
+            </div>
+        </div>
     </div>
     <script src="app.js"></script>
 </body>
