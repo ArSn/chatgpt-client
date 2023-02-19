@@ -22,6 +22,7 @@
             flex: 1;
             background-color: #eee;
             padding: 20px;
+            overflow-y: scroll;
         }
 
         .footer {
@@ -57,6 +58,19 @@
             color: #fff;
             cursor: pointer;
         }
+
+        .question, .answer {
+            padding: 15px;
+        }
+
+        .question {
+            background-color: #ffffff;
+        }
+
+        .answer {
+            background-color: #dddddd;
+        }
+
     </style>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.7.0/build/styles/atom-one-dark.min.css">
     <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.7.0/build/highlight.min.js"></script>
@@ -64,7 +78,6 @@
 <body>
     <div class="container">
         <div class="content" id="message-container">
-            <p>Enter a prompt to begin.</p>
         </div>
         <div class="footer">
             <div class="input-wrapper">

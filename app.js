@@ -34,6 +34,17 @@ function sendMessage() {
         return;
     }
 
+    // Create question element
+    const questionContainer = window.document.createElement('div');
+    questionContainer.classList.add('question');
+    questionContainer.innerText = message;
+    messageContainer.append(questionContainer);
+
+    // Create answer element
+    const answerContainer = window.document.createElement('div');
+    answerContainer.classList.add('answer');
+    messageContainer.append(answerContainer);
+
     //messageInput.value = '';
 
     const xhr = new XMLHttpRequest();
@@ -43,7 +54,7 @@ function sendMessage() {
     xhr.onreadystatechange = function() {
         if (xhr.readyState === 3 && xhr.status === 200) {
             const response = xhr.responseText;
-            messageContainer.innerHTML = renderSpecialThings( response );
+            answerContainer.innerHTML = renderSpecialThings( response );
             messageContainer.scrollTop = messageContainer.scrollHeight;
         }
         hljs.highlightAll();
